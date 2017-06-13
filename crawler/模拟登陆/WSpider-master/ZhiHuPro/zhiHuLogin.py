@@ -2,7 +2,7 @@
 """
 Created on Thu Nov 02 17:07:17 2016
 
-@转载自  原作者： liudiwei
+@author: liudiwei
 """
 import os,sys
 import urllib
@@ -59,7 +59,7 @@ def zhiHuLogin():
     }
 
     url = r"https://www.zhihu.com/login/" + account_name
-    spy.setRequestData(url, post_data)
+    spy.setRequestData(url, post_data, header)
     resText = spy.getHtmlText()
     jsonText = json.loads(resText)
 

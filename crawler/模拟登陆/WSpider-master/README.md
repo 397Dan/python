@@ -1,3 +1,5 @@
+# 原作者 github：https://github.com/csuldw/WSpider
+
 # Introduction
 
 - SinaWSpider：Mini爬虫爬取新浪数据，详细步骤参见[新浪微博数据爬取Part 3：小爬虫的诞生](http://www.csuldw.com/2016/12/25/2016-12-25-sina-spider-user-data-part3/)

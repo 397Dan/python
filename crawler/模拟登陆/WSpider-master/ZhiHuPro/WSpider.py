@@ -16,7 +16,7 @@ class WSpider(object):
         #init params
         self.url_path = None
         self.post_data = None
-        # self.header = {}
+        self.header = {}
         self.domain = None
         self.operate = None
         self.logger = None
@@ -25,23 +25,23 @@ class WSpider(object):
         self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookiejar))
         urllib2.install_opener(self.opener)
 
-    def setRequestData(self, url_path=None, post_data=None):
+    def setRequestData(self, url_path=None, post_data=None, header=None):
         self.url_path = url_path
         self.post_data = post_data
-        # self.header = header
+        self.header = header
 
-    def sendRequest(self, url, data={}):
-        request = urllib2.Request(url, urllib.urlencode(data))
+    def sendRequest(self, url, data={}, header={}):
+        request = urllib2.Request(url, urllib.urlencode(data), header)
         result = urllib2.urlopen(request)
         return result
 
     def getHtmlText(self, is_cookie=False):
-        if self.post_data == None:
+        if self.post_data == None and self.header == {}:
             request = urllib2.Request(self.url_path)
         elif self.post_data == None:
-            request = urllib2.Request(self.url_path)
+            request = urllib2.Request(self.url_path, headers = self.header)
         else:
-            request = urllib2.Request(self.url_path, urllib.urlencode(self.post_data))
+            request = urllib2.Request(self.url_path, urllib.urlencode(self.post_data), self.header)
         result = urllib2.urlopen(request)
         if is_cookie: 
             self.operate = self.opener.open(request)
@@ -103,7 +103,7 @@ class WSpider(object):
         return logger
 
     def mkdirs(self, log_file):
-        prefix = os.path.dirname(log_file) # os.path.dirname: 返回一个去掉后缀的文件名
+        prefix = os.path.dirname(log_file)
         if not os.path.exists(prefix):
             os.makedirs(prefix)
     
