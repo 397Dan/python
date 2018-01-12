@@ -1,6 +1,8 @@
 #!/usr/bin/python
 #coding=utf-8
-
+'''
+	狄克斯特拉算法 - 图 - 最短路径
+'''
 import sys
 
 # 图转成dict   这是一种麻烦不现实的建法 留心以后学的过程中 复杂模型怎么建立
