@@ -8,7 +8,6 @@
 '''
 
 
-
 states_needs = set(["mt", "wa", "or", "id", "nv", "ut","ca", "az"])
 stations = {}
 stations["kone"] = set(["id", "nv", "ut"])
