@@ -36,11 +36,20 @@ class Iresearch:
 	def __init__(self):
 		self.workbook = xlwt.Workbook()
 		self.worksheet = self.workbook.add_sheet('My Worksheet',cell_overwrite_ok=True)
-		self.worksheet.write(0, 0, u'排名')  # 不带样式的写入
-		self.worksheet.write(0, 1, u'电视剧')  # 不带样式的写入
-		self.worksheet.write(0, 2, u'设备数')  # 不带样式的写入
-		self.worksheet.write(0, 3, u'设备数(万)')  # 不带样式的写入
-		self.worksheet.write(0, 4, u'月份')  # 不带样式的写入
+		self.worksheet.write(0, 0, u'日期')  # 不带样式的写入
+		self.worksheet.write(0, 1, u'电影名')  # 不带样式的写入
+		self.worksheet.write(0, 2, u'票房(万)')  # 不带样式的写入
+		self.worksheet.write(0, 3, u'releaseInfo')  # 不带样式的写入
+		self.worksheet.write(0, 4, u'splitSumBoxInfo')  # 不带样式的写入
+		self.worksheet.write(0, 5, u'splitBoxRate')  # 不带样式的写入
+		self.worksheet.write(0, 6, u'splitBoxInfo')  # 不带样式的写入
+		self.worksheet.write(0, 7, u'showInfo')  # 不带样式的写入
+		self.worksheet.write(0, 8, u'showRate')  # 不带样式的写入
+		self.worksheet.write(0, 9, u'avgShowView')  # 不带样式的写入
+		self.worksheet.write(0, 10, u'splitAvgViewBox')  # 不带样式的写入
+		# self.worksheet.write(0, 2, u'设备数')  # 不带样式的写入
+		# self.worksheet.write(0, 3, u'设备数(万)')  # 不带样式的写入
+		# self.worksheet.write(0, 4, u'月份')  # 不带样式的写入
 
 	def getPageContent(self,url,delay=0):
 		time.sleep(delay)
@@ -73,6 +82,44 @@ class Iresearch:
 			self.workbook.save("Iresearch/"+dateName+"_"+channel+"_"+tool+".xls")
 			print dateName+"已经写入"
 
+	def getMaoyan(self):
+		num = 0
+		baseUrl = 'https://box.maoyan.com/promovie/api/box/second.json?beginDate=2018%s%s'
+		for i in range(1,7):
+			i = '0%s'%i if len(str(i)) == 1 else i
+			for j in range(1,32):
+				j = '0%s' % j if len(str(j)) == 1 else j
+				url = baseUrl%(str(i),str(j))
+				print url
+				date = '2018%s%s'%(str(i),str(j))
+				content = self.getPageContent(url,1)
+				pageDict = json.loads(content)
+				if pageDict['data'].has_key("list"):
+					for n in pageDict['data']['list']:
+						num += 1
+						boxInfo = n['boxInfo']
+						name = n['movieName']
+						releaseInfo = n['releaseInfo']
+						splitSumBoxInfo = n['splitSumBoxInfo']
+						splitBoxRate = n['splitBoxRate']
+						splitBoxInfo = n['splitBoxInfo']
+						showInfo = n['showInfo']
+						showRate = n['showRate']
+						avgShowView = n['avgShowView']
+						splitAvgViewBox = n['splitAvgViewBox']
+						self.worksheet.write(num,0,date)
+						self.worksheet.write(num,1,name)
+						self.worksheet.write(num,2,boxInfo)
+						self.worksheet.write(num,3,releaseInfo)
+						self.worksheet.write(num,4,splitSumBoxInfo)
+						self.worksheet.write(num,5,splitBoxRate)
+						self.worksheet.write(num,6,splitBoxInfo)
+						self.worksheet.write(num,7,showInfo)
+						self.worksheet.write(num,8,showRate)
+						self.worksheet.write(num,9,avgShowView)
+						self.worksheet.write(num,10,splitAvgViewBox)
+		self.workbook.save("BoxInfo.xls")
+
 	def isDirExists(self):
 		path = 'Iresearch/'
 		if os.path.exists(path):
@@ -81,6 +128,6 @@ class Iresearch:
 			os.makedirs(path)
 
 if __name__ == '__main__':
-	Iresearch().getUrls("art","mobile",["201701","201803"],5)
-	Iresearch().getUrls("tv","mobile",["201701","201803"],5)
+	Iresearch().getMaoyan()
+	# Iresearch().getUrls("tv","mobile",["201701","201803"],5)
 
