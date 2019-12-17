@@ -61,7 +61,7 @@ def main2():
 		print 'all DONE at:',ctime()
 
 if __name__ == '__main__':
-	main2()
+	main()
 
 '''
 	1.为什么不在上锁的循环中启动进程？：1.以便所有马同时冲出围栏；
