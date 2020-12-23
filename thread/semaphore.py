@@ -1,5 +1,10 @@
 from multiprocessing import Process, Semaphore, Lock, Queue
 import time
+from random import random
+
+'''
+生产者放入队列中数据，然后消费者将数据取出来。
+'''
 
 buffer = Queue(10)
 empty = Semaphore(3)
@@ -13,8 +18,7 @@ class Consumer(Process):
         while True:
             full.acquire()
             lock.acquire()
-            buffer.get()
-            print('Consumer pop an element')
+            print 'Consumer get', buffer.get()
             time.sleep(1)
             lock.release()
             empty.release()
@@ -26,8 +30,9 @@ class Producer(Process):
         while True:
             empty.acquire()
             lock.acquire()
-            buffer.put(1)
-            print('Producer append an element')
+            num = random()
+            print 'Producer put ', num
+            buffer.put(num)
             time.sleep(1)
             lock.release()
             full.release()
